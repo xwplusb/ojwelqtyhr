@@ -1,0 +1,9 @@
+data:
+  name: 'CIFAR'
+  root: 'data/CIFAR'
+  transform: 'MNIST_train_trans'
+  targets: [0,1,2,3]
+  download: True
+
+model:
+  

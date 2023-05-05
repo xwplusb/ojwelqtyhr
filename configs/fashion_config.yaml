@@ -1,0 +1,6 @@
+data:
+  name: 'FashionMNIST'
+  root: 'data'
+  transform: 'MNIST_train_trans'
+  # targets: [0,1,2,3]
+  download: True

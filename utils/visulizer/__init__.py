@@ -1,0 +1,1 @@
+from .dump_image import save_img
