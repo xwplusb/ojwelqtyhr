@@ -3,4 +3,6 @@
 - [x] score net and trainer
 - [ ] student's selective targets training
 - [ ] something called genetic algorithm optimizing :worried:
-- [ ] debug and test
+- [ ] visualize the results :fearful:
+- [ ] tune all the nets and parameters :skull:
+- [ ] debug and tests
