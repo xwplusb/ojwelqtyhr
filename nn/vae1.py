@@ -96,6 +96,7 @@ class VAE(nn.Module):
     def sample(self, label):
         
         c = F.one_hot(label, num_classes=self.num_classes)
+        c = c.to(self.device)
         # assume latent features space ~ N(0, 1)
         z = torch.randn(len(c), self.n_latent_features).to(self.device)
         z = torch.cat([z,c], dim=1)

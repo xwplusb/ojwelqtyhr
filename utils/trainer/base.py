@@ -4,7 +4,6 @@ from torch import save, load
 from torch.optim import Adam
 
 
-
 class BaseTrainer:
 
     def __init__(self, model, dataloader, config, rank=0, *args, **kwargs) -> None:
@@ -15,9 +14,7 @@ class BaseTrainer:
         self.rank = rank
         self.optim = Adam(params=model.parameters(), lr=config['lr'])
 
-        self.save_every = config['save_every']
         self.checkpoint_path = config['checkpoint_path']
-        self.sample_path = config['sample_path']
         self.logger = self.get_logger(config['log'])
         self.log_every = config['log']['log_every']
     

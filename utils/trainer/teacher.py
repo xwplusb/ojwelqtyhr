@@ -7,7 +7,10 @@ class TeacherTrainer(BaseTrainer):
 
     def __init__(self, model, dataloader, config, rank=0, *args, **kwargs) -> None:
         super().__init__(model, dataloader, config, rank, *args, **kwargs)
+        self.sample_path = config['sample_path']
+        self.save_every = config['save_every']
 
+        
     def fit(self, x, y):
         x_, mu, logvar = self.model(x, y)
         loss = self.model.loss_function(x_, x, mu, logvar)

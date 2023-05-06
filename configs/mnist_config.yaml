@@ -8,6 +8,15 @@ train:
   #   save_every: 2
   #   checkpoint_path: 'output/checkpoints/mnist_teacher'
   #   sample_path: 'output/images/mnist'
+  score:
+    batch_size: 16
+    datasize: 10000
+    epoch: 1
+    lr: 0.001
+    log:
+      path: 'output/log/mnist_socre.log'
+      log_every: 10
+    checkpoint_path: 'output/checkpoints/mnist_socre'
   teacher_path: 'output/checkpoints/mnist_teacher1.pt'
 
   train_score:
