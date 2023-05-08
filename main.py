@@ -60,11 +60,12 @@ def main(config):
         data_loader = DataLoader(data, config['train']['batch_size'], drop_last=True)
         student_trainer = StudentTrainer(student, data_loader, config['train']['train_students'])
         student_trainer.run()
-
-        
     
     else:
-        pass
+        assert config['train']['student_path'], "student model path is required"
+        student = VAE(**config['model'])
+        student.load_state_dict(torch.load(config['train']['student_path'])['model'])
+        student.to('cuda')
     
 
     
