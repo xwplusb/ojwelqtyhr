@@ -1,7 +1,7 @@
 # ojwelqtyhr
 - [x] teacher net and trainer
 - [x] score net and trainer
-- [ ] student's selective targets training
+- [x] student's selective targets training
 - [ ] something called genetic algorithm optimizing :worried:
 - [ ] visualize the results :fearful:
 - [ ] tune all the nets and parameters :skull:

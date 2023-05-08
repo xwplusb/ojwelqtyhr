@@ -51,9 +51,7 @@ class CIFAR(CIFAR10):
                 *args, **kwars) -> None:
         super().__init__(root, train, transform, target_transform, download)
 
-        print(type(self.data))
-        print(len(self.targets))
-        print(type(self.targets[0]))
+
         # print(self.targets.shape)
 
 class STL(STL10):

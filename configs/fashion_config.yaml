@@ -1,6 +1,58 @@
+train:
+  train_teacher:
+    epoch: 1
+    lr: 0.001
+    log:
+      path: 'output/log/fashion.log'
+      log_every: 10
+    save_every: 1
+    checkpoint_path: 'output/checkpoints/fashion'
+    sample_path: 'output/images/fashion'
+
+  train_score:
+    epoch: 1
+    batch_size: 128
+    datasize: 10000
+    lr: 0.001
+    log:
+      path: 'output/log/fashion_score.log'
+      log_every: 20
+    save_every: 1
+    checkpoint_path: 'output/checkpoints/fashion_score'
+
+  train_students:
+    epoch: 1
+    lr: 0.001
+    log:
+      path: 'output/log/fashion_student.log'
+      log_every: 10
+    save_every: 1
+    checkpoint_path: 'output/checkpoints/fashion_student'
+    sample_path: 'output/images/fashion_student'
+
+  # teacher_path: 'output/checkpoints/mnist_teacher5.pt'
+  # score_path: 'output/checkpoints/mnist_score.pt'
+  # student_path: 'output/checkpoints/mnist_student5.pt'
+  batch_size: 128
+
+  student:
+    src: [1,2,3,4]
+    dst: [3,4,5,6]
+
+
 data:
   name: 'FashionMNIST'
   root: 'data'
   transform: 'MNIST_train_trans'
-  # targets: [0,1,2,3]
   download: True
+
+
+
+model:
+  pooling_kernel: [2, 2]
+  encoder_output_size: 7
+  color_channels: 1
+  num_classes: 10
+
+optim:
+  lr: 0.001

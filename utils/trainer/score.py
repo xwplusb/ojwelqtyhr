@@ -9,7 +9,6 @@ class ScoreTrainer(BaseTrainer):
     def __init__(self, model, dataloader, config, rank=0, *args, **kwargs) -> None:
         super().__init__(model, dataloader, config, rank, *args, **kwargs)
 
-
     def fit(self, x, y):
         logits = self.model(x)
         loss = self.model.loss(logits, y)  

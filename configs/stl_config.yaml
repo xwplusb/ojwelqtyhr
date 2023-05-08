@@ -1,21 +1,55 @@
 train:
   train_teacher:
-    epoch: 10
+    epoch: 1
     lr: 0.001
-  batch_size: 10
+    log:
+      path: 'output/log/stl_teacher.log'
+      log_every: 10
+    save_every: 1
+    checkpoint_path: 'output/checkpoints/stl_teacher'
+    sample_path: 'output/images/stl'
 
+  train_score:
+    batch_size: 128
+    epoch: 1
+    datasize: 10000
+    lr: 0.001
+    log:
+      path: 'output/log/stl_score.log'
+      log_every: 20
+    save_every: 2
+    checkpoint_path: 'output/checkpoints/stl_score'
+
+  train_students:
+    epoch: 1
+    lr: 0.001
+    log:
+      path: 'output/log/stl_student.log'
+      log_every: 10
+    save_every: 1
+    checkpoint_path: 'output/checkpoints/stl_student'
+    sample_path: 'output/images/stl_student'
+
+  # teacher_path: 'output/checkpoints/stl_teacher5.pt'
+  # score_path: 'output/checkpoints/stl_score.pt'
+  # student_path: 'output/checkpoints/stl_student5.pt'
+  batch_size: 64
+
+  student:
+    src: [1,2,3,4]
+    dst: [3,4,5,6]
+  
 data:
   name: 'STL'
   root: 'data/STL'
   transform: 'MNIST_train_trans'
-  targets: [0,1,2,3]
   download: True
 
 model:
   pooling_kernel: [4, 4]
   encoder_output_size: 6
   color_channels: 3
-
+  num_classes: 10
   
 optim:
   lr: 0.001
