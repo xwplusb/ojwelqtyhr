@@ -1,23 +1,13 @@
 train:
-  # train_teacher:
-  #   epoch: 10
-  #   lr: 0.001
-  #   log:
-  #     path: 'output/log/mnist_teacher.log'
-  #     log_every: 10
-  #   save_every: 2
-  #   checkpoint_path: 'output/checkpoints/mnist_teacher'
-  #   sample_path: 'output/images/mnist'
-  score:
-    batch_size: 16
-    datasize: 10000
-    epoch: 1
+  train_teacher:
+    epoch: 10
     lr: 0.001
     log:
-      path: 'output/log/mnist_socre.log'
+      path: 'output/log/mnist_teacher.log'
       log_every: 10
-    checkpoint_path: 'output/checkpoints/mnist_socre'
-  teacher_path: 'output/checkpoints/mnist_teacher1.pt'
+    save_every: 2
+    checkpoint_path: 'output/checkpoints/mnist_teacher'
+    sample_path: 'output/images/mnist'
 
   train_score:
     iteration: 100
@@ -27,7 +17,24 @@ train:
       log_every: 20
     save_every: 2
     checkpoint_path: 'output/checkpoints/mnist_score'
+
+  train_students:
+    epoch: 10
+    lr: 0.001
+    log:
+      path: 'output/log/mnist_student.log'
+      log_every: 10
+    save_every: 2
+    checkpoint_path: 'output/checkpoints/mnist_student'
+    sample_path: 'output/images/mnist_student'
+
+  teacher_path: 'output/checkpoints/mnist_teacher5.pt'
+  score_path: 'output/checkpoints/mnist_score.pt'
   batch_size: 128
+
+  student:
+    src: [1,2,3,4]
+    dst: [3,4,5,6]
 
 
 data:
@@ -35,6 +42,7 @@ data:
   root: 'data'
   transform: 'MNIST_train_trans'
   download: True
+
 
 
 model:
