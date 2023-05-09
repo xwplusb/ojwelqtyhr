@@ -1,38 +1,38 @@
 train:
-  train_teacher:
-    epoch: 1
-    lr: 0.001
-    log:
-      path: 'output/log/mnist_teacher.log'
-      log_every: 10
-    save_every: 1
-    checkpoint_path: 'output/checkpoints/mnist_teacher'
-    sample_path: 'output/images/mnist'
+  # train_teacher:
+  #   epoch: 1
+  #   lr: 0.001
+  #   log:
+  #     path: 'output/log/mnist_teacher.log'
+  #     log_every: 10
+  #   save_every: 1
+  #   checkpoint_path: 'output/checkpoints/mnist_teacher'
+  #   sample_path: 'output/images/mnist'
 
-  train_score:
-    batch_size: 128
-    epoch: 1
-    datasize: 10000
-    lr: 0.001
-    log:
-      path: 'output/log/mnist_score.log'
-      log_every: 20
-    save_every: 2
-    checkpoint_path: 'output/checkpoints/mnist_score'
+  # train_score:
+  #   batch_size: 128
+  #   epoch: 1
+  #   datasize: 10000
+  #   lr: 0.001
+  #   log:
+  #     path: 'output/log/mnist_score.log'
+  #     log_every: 20
+  #   save_every: 2
+  #   checkpoint_path: 'output/checkpoints/mnist_score'
 
-  train_students:
-    epoch: 1
-    lr: 0.001
-    log:
-      path: 'output/log/mnist_student.log'
-      log_every: 10
-    save_every: 1
-    checkpoint_path: 'output/checkpoints/mnist_student'
-    sample_path: 'output/images/mnist_student'
+  # train_students:
+  #   epoch: 1
+  #   lr: 0.001
+  #   log:
+  #     path: 'output/log/mnist_student.log'
+  #     log_every: 10
+  #   save_every: 1
+  #   checkpoint_path: 'output/checkpoints/mnist_student'
+  #   sample_path: 'output/images/mnist_student'
 
-  # teacher_path: 'output/checkpoints/mnist_teacher5.pt'
-  # score_path: 'output/checkpoints/mnist_score.pt'
-  # student_path: 'output/checkpoints/mnist_student5.pt'
+  teacher_path: 'output/checkpoints/mnist_teacher0.pt'
+  score_path: 'output/checkpoints/mnist_score.pt'
+  student_path: 'output/checkpoints/mnist_student0.pt'
   batch_size: 128
 
   student:
@@ -40,6 +40,30 @@ train:
     dst: [3,4,5,6]
 
 
+GA:
+  fit_func:
+    data_size: 4000
+    batch_size: 40
+    lr: 0.001
+    iter_limit: 1000
+    
+  instance:
+    num_generations: 32
+    num_genes: 4
+    num_parents_mating: 8
+    sol_per_pop: 10
+    
+    init_range_low: 0
+    init_range_high: 1
+    
+    parent_selection_type: 'sss'
+    keep_parents: 4
+    crossover_type: 'uniform'
+
+    mutation_type: 'scramble'
+    # mutation_percent_genes: 2
+    mutation_num_genes: 2
+    
 data:
   name: 'MNIST'
   root: 'data'

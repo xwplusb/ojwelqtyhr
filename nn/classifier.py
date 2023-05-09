@@ -20,8 +20,6 @@ class Discriminator(nn.Module):
         self.head = nn.Linear(256, num_classes)
 
     def forward(self, x):
-        
-
         out = self.m3(self.m2(self.m1(self.bottle(x))))
         out = self.pool(out)
         out = self.head(out.squeeze(2,3))
