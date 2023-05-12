@@ -1,44 +1,73 @@
 train:
-  train_teacher:
-    epoch: 1
-    lr: 0.001
-    log:
-      path: 'output/log/stl_teacher.log'
-      log_every: 10
-    save_every: 1
-    checkpoint_path: 'output/checkpoints/stl_teacher'
-    sample_path: 'output/images/stl'
+  # train_teacher:
+  #   epoch: 1
+  #   lr: 0.001
+  #   log:
+  #     path: 'output/log/stl_teacher.log'
+  #     log_every: 10
+  #   save_every: 1
+  #   checkpoint_path: 'output/checkpoints/stl_teacher'
+  #   sample_path: 'output/images/stl'
 
-  train_score:
-    batch_size: 128
-    epoch: 1
-    datasize: 10000
-    lr: 0.001
-    log:
-      path: 'output/log/stl_score.log'
-      log_every: 20
-    save_every: 2
-    checkpoint_path: 'output/checkpoints/stl_score'
+  # train_score:
+  #   batch_size: 128
+  #   epoch: 1
+  #   datasize: 10000
+  #   lr: 0.001
+  #   log:
+  #     path: 'output/log/stl_score.log'
+  #     log_every: 20
+  #   save_every: 2
+  #   checkpoint_path: 'output/checkpoints/stl_score'
 
-  train_students:
-    epoch: 1
-    lr: 0.001
-    log:
-      path: 'output/log/stl_student.log'
-      log_every: 10
-    save_every: 1
-    checkpoint_path: 'output/checkpoints/stl_student'
-    sample_path: 'output/images/stl_student'
+  # train_students:
+  #   epoch: 1
+  #   lr: 0.001
+  #   log:
+  #     path: 'output/log/stl_student.log'
+  #     log_every: 10
+  #   save_every: 1
+  #   checkpoint_path: 'output/checkpoints/stl_student'
+  #   sample_path: 'output/images/stl_student'
 
-  # teacher_path: 'output/checkpoints/stl_teacher5.pt'
-  # score_path: 'output/checkpoints/stl_score.pt'
-  # student_path: 'output/checkpoints/stl_student5.pt'
-  batch_size: 64
+  teacher_path: 'output/checkpoints/stl_teacher0.pt'
+  score_path: 'output/checkpoints/stl_score.pt'
+  student_path: 'output/checkpoints/stl_student0.pt'
+  batch_size: 36
 
   student:
     src: [1,2,3,4]
     dst: [3,4,5,6]
-  
+
+GA:
+  fit_func:
+    data_size: 4000
+    batch_size: 40
+    lr: 0.001
+    iter_limit: 1000
+    
+  instance:
+    num_generations: 32
+    num_genes: 4
+    num_parents_mating: 8
+    sol_per_pop: 10
+    
+    init_range_low: 0
+    init_range_high: 1
+    
+    parent_selection_type: 'sss'
+    keep_parents: 4
+    crossover_type: 'uniform'
+
+    mutation_type: 'scramble'
+    # mutation_percent_genes: 2
+    mutation_num_genes: 2
+  upper_bound: 3.0
+  fitness_fig_path: 'output/images/fitness/stl'
+
+
+
+
 data:
   name: 'STL'
   root: 'data/STL'

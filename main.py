@@ -74,14 +74,16 @@ def main(config):
     target_label = torch.tensor(target_label).to('cuda')
 
     def fit_func(ga_instance, solution, solution_idx):
-        solution = torch.tensor(solution)
-        beta = torch.softmax(solution, dim=0)
 
-        beta = beta.to('cuda')
-        head = torch.distributions.Categorical(probs=beta)
+        with torch.no_grad():
+            solution = torch.tensor(solution)
+            beta = torch.softmax(solution, dim=0)
 
-        csample = head.sample((data_size, ))
-        csample = target_label[csample]
+            beta = beta.to('cuda')
+            head = torch.distributions.Categorical(probs=beta)
+
+            csample = head.sample((data_size, ))
+            csample = target_label[csample]
 
         
         data = teacher.sample(csample)
@@ -89,8 +91,8 @@ def main(config):
         
         data_loader = DataLoader(data, batch_size)
 
-        print("examine new gene", solution_idx)
-        print("gene", beta)
+        # print("examine new gene", solution_idx)
+        # print("gene", beta)
 
         student_a = VAE(**config['model'])
         student_a.load_state_dict(student.state_dict())
@@ -101,6 +103,8 @@ def main(config):
 
         iter_count = 0
         flag = True 
+        upper_bound = config['GA']['upper_bound']
+
         for i, (x, y) in enumerate(data_loader):
             x_, mu, log_var = student_a(x, y)
             loss = student_a.loss_function(x_, x, mu, log_var)
@@ -113,20 +117,21 @@ def main(config):
                 samples = student_a.sample(target_label)
                 logits = score(samples)
                 minus_grade = score.loss(logits, target_label)
-                print(minus_grade)
+                # print(minus_grade)
 
+                if minus_grade < upper_bound or iter_count == 1000:
+                    flag = False
+                    break
         
-        # flag = True
-        # iter_count = 0
 
-        # while flag and iter_count < iter_limit:
+        print(iter_count)
 
-        #     for i, xy in enumerate(data_loader):
-        #         x,y
+        # this is necessary ! 
+        # or cuda out of memory
+        del student_a
+        torch.cuda.empty_cache()
 
-
-
-
+        return 1 - iter_count/100
 
 
 
@@ -136,6 +141,10 @@ def main(config):
     score.requires_grad_(False)
     ga = GA(fitness_func=fit_func, **config['GA']['instance'])
     ga.run()
+    fitness_plot = ga.plot_fitness()
+    fitness_plot.savefig(config['GA']['fitness_fig_path'])
+
+
 if __name__ == '__main__':
 
     args = parse_args()

@@ -63,7 +63,10 @@ GA:
     mutation_type: 'scramble'
     # mutation_percent_genes: 2
     mutation_num_genes: 2
-    
+  upper_bound: 0.3
+  fitness_fig_path: 'output/images/fitness/mnist'
+
+ 
 data:
   name: 'MNIST'
   root: 'data'
