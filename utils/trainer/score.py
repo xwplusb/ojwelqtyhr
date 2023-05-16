@@ -19,12 +19,12 @@ class ScoreTrainer(BaseTrainer):
         for i, (x, y) in enumerate(self.data):
             x = x.to(self.rank)
             y = y.to(self.rank)
-
             loss = self.fit(x, y)
             loss.backward()
             self.optim.step()
             if(i + 1) % self.log_every == 0:
                 self.logger.info(f'iter {i+1} loss {loss.item():.5f}')
+                
         self.save(self.checkpoint_path + '.pt')
         self.logger.info(f"saving score model to {self.checkpoint_path}.pt")
 

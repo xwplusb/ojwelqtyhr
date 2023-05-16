@@ -1,7 +1,7 @@
 from .base import BaseTrainer
 from torch import no_grad
 from utils.visulizer import save_img
-
+from torch.optim.lr_scheduler import StepLR
 
 class StudentTrainer(BaseTrainer):
 
@@ -9,6 +9,7 @@ class StudentTrainer(BaseTrainer):
         super().__init__(model, dataloader, config, rank, *args, **kwargs)
         self.sample_path = config['sample_path']
         self.save_every = config['save_every']
+        self.lr_schr = StepLR(self.optim, 10, 0.1)
         
     def fit(self, x, y):
         x_, mu, logvar = self.model(x, y)
@@ -29,7 +30,7 @@ class StudentTrainer(BaseTrainer):
                 self.optim.step()
                 if (i + 1) % self.log_every  == 0:
                     self.logger.info(f'iter {i+1} loss {loss.item():.5f}')
-
+            self.lr_schr.step()
             if (epoch + 1) % self.save_every == 0:
                     self.save(self.checkpoint_path + str(epoch) + '.pt')
                     self.logger.info(f'saving checkpoint to {self.checkpoint_path + str(epoch) + ".pt"}')

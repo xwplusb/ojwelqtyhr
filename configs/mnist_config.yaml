@@ -1,43 +1,46 @@
 train:
   # train_teacher:
-  #   epoch: 1
+  #   epoch: 20
   #   lr: 0.001
   #   log:
   #     path: 'output/log/mnist_teacher.log'
   #     log_every: 10
-  #   save_every: 1
+  #   save_every: 5
   #   checkpoint_path: 'output/checkpoints/mnist_teacher'
   #   sample_path: 'output/images/mnist'
 
   # train_score:
+  #   # caution, score dataloader is implemented by generator, 
+      # once the last sample is enumerated, the training comes to an end
+  #   # setting epoch here is useless, change the datasize to control training
   #   batch_size: 128
   #   epoch: 1
-  #   datasize: 10000
+  #   datasize: 800000
   #   lr: 0.001
   #   log:
   #     path: 'output/log/mnist_score.log'
   #     log_every: 20
-  #   save_every: 2
+  #   save_every: 5
   #   checkpoint_path: 'output/checkpoints/mnist_score'
 
   # train_students:
-  #   epoch: 1
+  #   epoch: 20
   #   lr: 0.001
   #   log:
   #     path: 'output/log/mnist_student.log'
   #     log_every: 10
-  #   save_every: 1
+  #   save_every: 5
   #   checkpoint_path: 'output/checkpoints/mnist_student'
   #   sample_path: 'output/images/mnist_student'
 
-  teacher_path: 'output/checkpoints/mnist_teacher0.pt'
+  teacher_path: 'output/checkpoints/mnist_teacher19.pt'
   score_path: 'output/checkpoints/mnist_score.pt'
-  student_path: 'output/checkpoints/mnist_student0.pt'
+  student_path: 'output/checkpoints/mnist_student19.pt'
   batch_size: 128
 
   student:
     src: [1,2,3,4]
-    dst: [3,4,5,6]
+    dst: [1,2,3,4,5,6,7,8]
 
 
 GA:
@@ -45,11 +48,11 @@ GA:
     data_size: 4000
     batch_size: 40
     lr: 0.001
-    iter_limit: 1000
+    iter_limit: 5000
     
   instance:
     num_generations: 32
-    num_genes: 4
+    num_genes: 8
     num_parents_mating: 8
     sol_per_pop: 10
     
@@ -63,7 +66,7 @@ GA:
     mutation_type: 'scramble'
     # mutation_percent_genes: 2
     mutation_num_genes: 2
-  upper_bound: 0.3
+  upper_bound: 0.1
   fitness_fig_path: 'output/images/fitness/mnist'
 
  

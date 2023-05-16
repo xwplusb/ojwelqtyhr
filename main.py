@@ -6,12 +6,15 @@ from pygad import GA
 from torch.optim import Adam
 from torch.utils.data import DataLoader
 
+
 from nn.vae1 import VAE
 from nn.classifier import Discriminator
 
 from utils.data.sampler import yield_sample
 from utils.data.dataloader import load_data
 from utils.trainer import TeacherTrainer, ScoreTrainer, StudentTrainer
+
+from utils.visulizer import save_img
 
 
 def parse_args():
@@ -51,6 +54,7 @@ def main(config):
     else:
         assert config['train']['score_path'], "score model path required"
         score = Discriminator(**config['model'])
+
         score.load_state_dict(torch.load(config['train']['score_path'])['model'])
         score.to('cuda')
             
@@ -58,7 +62,7 @@ def main(config):
         student = VAE(**config['model'])
         targets = config['train']['student']['src']
         data = load_data(targets=targets, **config['data'])
-        data_loader = DataLoader(data, config['train']['batch_size'], drop_last=True)
+        data_loader = DataLoader(data, config['train']['batch_size'])
         student_trainer = StudentTrainer(student, data_loader, config['train']['train_students'])
         student_trainer.run()
     else:
@@ -72,8 +76,12 @@ def main(config):
     iter_limit = config['GA']['fit_func']['iter_limit']
     target_label = config['train']['student']['dst']
     target_label = torch.tensor(target_label).to('cuda')
+    # target_label = torch.tensor([1,2,3,4,5,6]).to('cuda')
 
     def fit_func(ga_instance, solution, solution_idx):
+
+        
+        print(ga_instance.generations_completed)
 
         with torch.no_grad():
             solution = torch.tensor(solution)
@@ -85,7 +93,6 @@ def main(config):
             csample = head.sample((data_size, ))
             csample = target_label[csample]
 
-        
         data = teacher.sample(csample)
         data = list(zip(data, csample))
         
@@ -100,28 +107,34 @@ def main(config):
 
         optim = Adam(student_a.parameters(), lr=config['GA']['fit_func']['lr'])
 
-
         iter_count = 0
         flag = True 
         upper_bound = config['GA']['upper_bound']
 
-        for i, (x, y) in enumerate(data_loader):
-            x_, mu, log_var = student_a(x, y)
-            loss = student_a.loss_function(x_, x, mu, log_var)
-            optim.zero_grad()
-            loss.backward()
-            optim.step()
-            iter_count += 1
 
-            with torch.no_grad():
-                samples = student_a.sample(target_label)
-                logits = score(samples)
-                minus_grade = score.loss(logits, target_label)
-                # print(minus_grade)
+        while flag:
+            for i, (x, y) in enumerate(data_loader):
+                x_, mu, log_var = student_a(x, y)
+                loss = student_a.loss_function(x_, x, mu, log_var)
+                optim.zero_grad()
+                loss.backward()
+                optim.step()
+                iter_count += 1
 
-                if minus_grade < upper_bound or iter_count == 1000:
-                    flag = False
-                    break
+                with torch.no_grad():
+
+                    samples = student_a.sample(target_label)
+                    logits = score(samples)
+                    minus_grade = score.loss(logits, target_label)
+                    # if (i+1) % 2 == 0:
+                    #     save_img(samples, 4, 'output/images/meta_sample' +str(idx) +'_' + str(i)+'.png')
+                    #     print(minus_grade)
+                    # if iter_count == 100:
+                    #     exit(0)
+
+                    if minus_grade < upper_bound or iter_count == iter_limit:
+                        flag = False
+                        break
         
 
         print(iter_count)

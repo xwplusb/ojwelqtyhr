@@ -1,38 +1,38 @@
 train:
   # train_teacher:
-  #   epoch: 1
+  #   epoch: 100
   #   lr: 0.001
   #   log:
   #     path: 'output/log/stl_teacher.log'
   #     log_every: 10
-  #   save_every: 1
+  #   save_every: 3
   #   checkpoint_path: 'output/checkpoints/stl_teacher'
   #   sample_path: 'output/images/stl'
 
-  # train_score:
-  #   batch_size: 128
-  #   epoch: 1
-  #   datasize: 10000
-  #   lr: 0.001
-  #   log:
-  #     path: 'output/log/stl_score.log'
-  #     log_every: 20
-  #   save_every: 2
-  #   checkpoint_path: 'output/checkpoints/stl_score'
+  train_score:
+    batch_size: 128
+    epoch: 10
+    datasize: 10000
+    lr: 0.001
+    log:
+      path: 'output/log/stl_score.log'
+      log_every: 20
+    save_every: 2
+    checkpoint_path: 'output/checkpoints/stl_score'
 
-  # train_students:
-  #   epoch: 1
-  #   lr: 0.001
-  #   log:
-  #     path: 'output/log/stl_student.log'
-  #     log_every: 10
-  #   save_every: 1
-  #   checkpoint_path: 'output/checkpoints/stl_student'
-  #   sample_path: 'output/images/stl_student'
+  train_students:
+    epoch: 10
+    lr: 0.001
+    log:
+      path: 'output/log/stl_student.log'
+      log_every: 10
+    save_every: 1
+    checkpoint_path: 'output/checkpoints/stl_student'
+    sample_path: 'output/images/stl_student'
 
-  teacher_path: 'output/checkpoints/stl_teacher0.pt'
-  score_path: 'output/checkpoints/stl_score.pt'
-  student_path: 'output/checkpoints/stl_student0.pt'
+  teacher_path: 'output/checkpoints/stl_teacher98.pt'
+  # score_path: 'output/checkpoints/stl_score.pt'
+  # student_path: 'output/checkpoints/stl_student0.pt'
   batch_size: 36
 
   student:
