@@ -30,7 +30,7 @@ def main(config):
     if 'train_teacher' in config['train']:
         data = load_data(**config['data'])
         model = VAE(**config['model'])
-        dataloader = DataLoader(data, config['train']['batch_size'], drop_last=True)
+        dataloader = DataLoader(data, config['train']['batch_size'], shuffle=True, drop_last=True)
         trainer = TeacherTrainer(model, dataloader, config['train']['train_teacher'])
         trainer.run()
         teacher = trainer.model
@@ -57,7 +57,7 @@ def main(config):
 
         score.load_state_dict(torch.load(config['train']['score_path'])['model'])
         score.to('cuda')
-            
+
     if 'train_students' in config['train']:
         student = VAE(**config['model'])
         targets = config['train']['student']['src']
@@ -77,11 +77,10 @@ def main(config):
     target_label = config['train']['student']['dst']
     target_label = torch.tensor(target_label).to('cuda')
     # target_label = torch.tensor([1,2,3,4,5,6]).to('cuda')
-
+    grad_stats = [0 for i in range(32)]
+    # avarager
     def fit_func(ga_instance, solution, solution_idx):
 
-        
-        print(ga_instance.generations_completed)
 
         with torch.no_grad():
             solution = torch.tensor(solution)
@@ -126,9 +125,10 @@ def main(config):
                     samples = student_a.sample(target_label)
                     logits = score(samples)
                     minus_grade = score.loss(logits, target_label)
-                    # if (i+1) % 2 == 0:
-                    #     save_img(samples, 4, 'output/images/meta_sample' +str(idx) +'_' + str(i)+'.png')
-                    #     print(minus_grade)
+                    if iter_count == 50:
+                        idx = ga_instance.generations_completed
+                        # save_img(samples, 4, 'output/images/meta_sample' +str(idx) +'_' + str(iter_count)+'.png')
+                        print(minus_grade, idx)
                     # if iter_count == 100:
                     #     exit(0)
 

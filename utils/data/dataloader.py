@@ -1,6 +1,6 @@
 from torch.utils.data import DataLoader
 
-from utils.data.dataset import MNIST_E, FashionMNIST_E, CIFAR, STL
+from utils.data.dataset import MNIST_E, FashionMNIST_E, CIFAR, STL, GTRSB, SVHN
 from utils.data.transfrom import trans_dict
 
 
@@ -8,7 +8,9 @@ dataset_dict = {
     'MNIST': MNIST_E,
     'FashionMNIST': FashionMNIST_E,
     'CIFAR': CIFAR,
-    'STL': STL
+    'STL': STL,
+    'SVHN': SVHN,
+    'GTRSB': GTRSB
 }
 
 def load_data(

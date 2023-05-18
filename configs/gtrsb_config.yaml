@@ -1,0 +1,63 @@
+train:
+#  teacher_path: 'output/checkpoints/gtrsb_teacher0.pt'
+#  score_path: 'output/checkpoints/gtrsb_score.pt'
+#  student_path: 'output/checkpoints/gtrsb_student0.pt'
+
+  batch_size: 128
+
+  train_teacher:
+   epoch: 100
+   lr: 0.001
+   log:
+     path: 'output/log/gtrsb_teacher.log'
+     log_every: 30
+   save_every: 7
+   checkpoint_path: 'output/checkpoints/gtrsb_teacher'
+   sample_path: 'output/images/gtrsb'
+
+  train_score:
+   batch_size: 128
+   epoch: 1
+   datasize: 10000
+   lr: 0.001
+   log:
+     path: 'output/log/gtrsb_score.log'
+     log_every: 20
+   save_every: 2
+   checkpoint_path: 'output/checkpoints/gtrsb_score'
+
+  train_students:
+   epoch: 1
+   lr: 0.001
+   log:
+     path: 'output/log/gtrsb_student.log'
+     log_every: 10
+   save_every: 1
+   checkpoint_path: 'output/checkpoints/gtrsb_student'
+   sample_path: 'output/images/gtrsb_student'
+
+
+  student:
+    src: [1,2,3,4]
+    dst: [3,4,5,6]
+
+
+model:
+  pooling_kernel: [4, 4]
+  encoder_output_size: 6
+  color_channels: 3
+  num_classes: 12
+# num_classes should be equal to len(targets)
+
+# number of image per class
+# [(210, 0), (2220, 1), (2250, 2), (1410, 3), (1980, 4), (1860, 5), (420, 6), (1440, 7), (1410, 8), (1470, 9), (2010, 10), (1320, 11), (2100, 12), (2160, 13), (780, 14), (630, 15), (420, 16), (1110, 17), (1200, 18), (210, 19), (360, 20), (330, 21), (390, 22), (510, 23), (270, 24), (1500, 25), (600, 26), (240, 27), (540, 28), (270, 29), (450, 30), (780, 31), (240, 32), (689, 33), (420, 34), (1200, 35), (390, 36), (210, 37), (2070, 38), (300, 39), (360, 40), (240, 41), (240, 42)]
+data:
+  name: 'GTRSB'
+  root: 'data/GTSRB/Final_Training/Images'
+  transform: 'GTRSB_Transform'
+  targets: [1, 2, 4, 9, 11, 18, 25, 26, 35, 36, 37, 38]
+
+
+
+optim:
+  lr: 0.001

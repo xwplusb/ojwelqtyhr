@@ -30,6 +30,7 @@ class Encoder(nn.Module):
 class DecoderModule(nn.Module):
     def __init__(self, input_channels, output_channels, stride, activation="relu"):
         super().__init__()
+
         self.convt = nn.ConvTranspose2d(input_channels, output_channels, kernel_size=stride, stride=stride)
         self.bn = nn.BatchNorm2d(output_channels)
         if activation == "relu":
@@ -38,7 +39,15 @@ class DecoderModule(nn.Module):
             self.activation = nn.Sigmoid()
 
     def forward(self, x):
-        return self.activation(self.bn(self.convt(x)))
+        # print('input', x.shape)
+        x = self.convt(x)
+        # print('ConvT', x.shape)
+
+        x = self.bn(x)
+
+        x = self.activation(x)
+
+        return x
     
 
 class Decoder(nn.Module):
@@ -49,6 +58,7 @@ class Decoder(nn.Module):
         self.m2 = DecoderModule(128, 64, stride=pooling_kernels[1])
         self.m3 = DecoderModule(64, 32, stride=pooling_kernels[0])
         self.bottle = DecoderModule(32, color_channels, stride=1, activation="sigmoid")
+
 
     def forward(self, x):
         out = x.view(-1, 256, self.decoder_input_size, self.decoder_input_size)
@@ -124,7 +134,9 @@ class VAE(nn.Module):
 
     @staticmethod
     def loss_function(recon_x, x, mu, logvar):
+
         # https://arxiv.org/abs/1312.6114 (Appendix B)
-        BCE = F.binary_cross_entropy(recon_x, x, reduction='mean')        
+        BCE = F.binary_cross_entropy(recon_x, x, reduction='mean')
+        # BCE = F.mse_loss(recon_x, x, reduction='mean')
         KLD = -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp())
         return BCE + KLD

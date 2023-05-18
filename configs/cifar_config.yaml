@@ -1,39 +1,41 @@
 train:
-  # train_teacher:
-  #   epoch: 1
-  #   lr: 0.001
-  #   log:
-  #     path: 'output/log/cifar_teacher.log'
-  #     log_every: 10
-  #   save_every: 1
-  #   checkpoint_path: 'output/checkpoints/cifar_teacher'
-  #   sample_path: 'output/images/cifar'
-
-  # train_score:
-  #   batch_size: 128
-  #   epoch: 1
-  #   datasize: 10000
-  #   lr: 0.001
-  #   log:
-  #     path: 'output/log/cifar_score.log'
-  #     log_every: 20
-  #   save_every: 2
-  #   checkpoint_path: 'output/checkpoints/cifar_score'
-
-  # train_students:
-  #   epoch: 1
-  #   lr: 0.001
-  #   log:
-  #     path: 'output/log/cifar_student.log'
-  #     log_every: 10
-  #   save_every: 1
-  #   checkpoint_path: 'output/checkpoints/cifar_student'
-  #   sample_path: 'output/images/cifar_student'
 
   teacher_path: 'output/checkpoints/cifar_teacher0.pt'
   score_path: 'output/checkpoints/cifar_score.pt'
   student_path: 'output/checkpoints/cifar_student0.pt'
   batch_size: 128
+
+  train_teacher:
+   epoch: 1
+   lr: 0.001
+   log:
+     path: 'output/log/cifar_teacher.log'
+     log_every: 10
+   save_every: 1
+   checkpoint_path: 'output/checkpoints/cifar_teacher'
+   sample_path: 'output/images/cifar'
+
+  train_score:
+   batch_size: 128
+   epoch: 1
+   datasize: 10000
+   lr: 0.001
+   log:
+     path: 'output/log/cifar_score.log'
+     log_every: 20
+   save_every: 2
+   checkpoint_path: 'output/checkpoints/cifar_score'
+
+  train_students:
+   epoch: 1
+   lr: 0.001
+   log:
+     path: 'output/log/cifar_student.log'
+     log_every: 10
+   save_every: 1
+   checkpoint_path: 'output/checkpoints/cifar_student'
+   sample_path: 'output/images/cifar_student'
+
 
   student:
     src: [1,2,3,4]

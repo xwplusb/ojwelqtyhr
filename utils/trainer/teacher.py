@@ -10,7 +10,7 @@ class TeacherTrainer(BaseTrainer):
         super().__init__(model, dataloader, config, rank, *args, **kwargs)
         self.sample_path = config['sample_path']
         self.save_every = config['save_every']
-        self.lr_schr = StepLR(self.optim, 3, 0.1)
+        self.lr_schr = StepLR(self.optim, 11, 0.25)
         
     def fit(self, x, y):
         x_, mu, logvar = self.model(x, y)
@@ -25,12 +25,13 @@ class TeacherTrainer(BaseTrainer):
             for i, (x, y) in enumerate(self.data):
                 x = x.to(self.rank)
                 y = y.to(self.rank)
+
                 loss, output = self.fit(x, y)            
                 self.optim.zero_grad()
                 loss.backward()
                 self.optim.step()
                 if (i + 1) % self.log_every  == 0:
-                    self.logger.info(f'iter {i+1} loss {loss.item():.5f}')
+                    self.logger.info(f'epoch {epoch+1} iter {i+1} loss {loss.item():.5f}')
             self.lr_schr.step()
             if (epoch + 1) % self.save_every == 0:
                     self.save(self.checkpoint_path + str(epoch) + '.pt')
@@ -38,5 +39,5 @@ class TeacherTrainer(BaseTrainer):
                     with no_grad():
                         sample = self.model.sample_class()
 
-                        save_img(sample, 2, self.sample_path + str(epoch) + '.png')
+                        save_img(sample, 4, self.sample_path + str(epoch) + '.png')
                         self.logger.info(f'saveing sampled images to {self.sample_path + str(epoch) + ".png"}')
