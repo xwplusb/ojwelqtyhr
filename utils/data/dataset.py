@@ -90,10 +90,14 @@ class GTRSB(ImageFolder):
 
     def __init__(self, root: str, transform, targets, *args, **kwars):
         super().__init__(root, transform)
-        re_index = dict( zip(targets, range(len(targets))))
+        _targets = [1, 2, 4, 9, 11, 18, 25, 26, 35, 36, 37, 38]
+        self.re_index = dict( zip(_targets, range(len(_targets))))
 
-        if(targets):
-            self.samples = list( tuple((samp[0], re_index[samp[1]])) for samp in self.samples if samp[1] in targets)
+        self.samples = list( tuple((samp[0], self.re_index[samp[1]])) for samp in self.samples if samp[1] in _targets)
+        self.targets = list( samp[1] for samp in self.samples )
+
+        if targets:
+            self.samples = list( samp for samp in self.samples if samp[1] in targets)
             self.targets = list(samp[1] for samp in self.samples)
 
 

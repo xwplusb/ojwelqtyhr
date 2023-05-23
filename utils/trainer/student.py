@@ -37,5 +37,5 @@ class StudentTrainer(BaseTrainer):
                     with no_grad():
                         sample = self.model.sample_class()
 
-                        save_img(sample, 2, self.sample_path + str(epoch) + '.png')
+                        save_img(sample, 4, self.sample_path + str(epoch) + '.png')
                         self.logger.info(f'saveing sampled images to {self.sample_path + str(epoch) + ".png"}')
