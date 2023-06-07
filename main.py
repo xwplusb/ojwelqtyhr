@@ -5,6 +5,7 @@ import argparse
 from pygad import GA
 from torch.optim import Adam
 from torch.utils.data import DataLoader
+import matplotlib.pyplot as plt
 
 from nn.vae1 import VAE
 from nn.classifier import Discriminator
@@ -132,8 +133,7 @@ def main(config):
 
                     if iter_count == iter_limit:
                         flag = False
-                        grad_stats[idx] = minus_grade
-
+                        grad_stats[idx] = minus_grade.detach().cpu()
                         class_samples = student_a.sample_class()
                         surfix = str(idx) + '_' + str(solution_idx) + '_' + str(iter_count)
                         save_img(class_samples, 4, 'output/images/meta_sample' + surfix + '.png')
@@ -155,7 +155,11 @@ def main(config):
     ga = GA(fitness_func=fit_func, **config['GA']['instance'])
     ga.run()
     save_plot(grad_stats, 'generation', 'best loss', 'output/images/fitness/grad.png')
+    plt.title(config['data']['name'])
+    plt.xlabel('gen')
+    plt.ylabel('fitness')
     fitness_plot = ga.plot_fitness()
+
     fitness_plot.savefig(config['GA']['fitness_fig_path'])
 
 
