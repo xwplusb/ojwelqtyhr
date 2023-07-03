@@ -14,6 +14,7 @@ from utils.data.sampler import yield_sample
 from utils.data.dataloader import load_data
 from utils.trainer import TeacherTrainer, ScoreTrainer, StudentTrainer
 from utils.visulizer import save_img, save_plot
+
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=str, default="configs/mnist_config.yaml")
@@ -23,6 +24,7 @@ def parse_args():
 
 
 def main(config):
+    
     if 'train_teacher' in config['train']:
         data = load_data(**config['data'])
         model = VAE(**config['model'])
