@@ -25,6 +25,10 @@ def parse_args():
 
 def main(config):
     
+
+    # 预训练阶段
+    # 需要提前训练好教师模型，学生模型和分数模型
+    # 如果已经训练号则直接load
     if 'train_teacher' in config['train']:
         data = load_data(**config['data'])
         model = VAE(**config['model'])
@@ -41,7 +45,7 @@ def main(config):
     if 'train_score' in config['train']:
         score = Discriminator(**config['model'])
         # to sample training data once for all is not efficient
-        # using a generator instead
+        # currently using a generator instead
         # TODO: find a better solution
         data = yield_sample(teacher,
                             config['model']['num_classes'],
@@ -64,12 +68,17 @@ def main(config):
         student_trainer = StudentTrainer(student, data_loader, config['train']['train_students'])
         student_trainer.run()
     else:
-        assert config['train']['student_path'], "student model path is required"
+        assert config['train']['student_path'], "student model path required"
         student = VAE(**config['model'])
         student.load_state_dict(torch.load(config['train']['student_path'])['model'])
         student.to('cuda')
 
 
+    # 遗传算法优化阶段
+    # 将教师模型产生数据的分布（Categorical Distribution）作为基因
+    # 学生模型达到分数模型要求的最小迭代次数作为基因适应性分数
+
+    
     data_size = config['GA']['fit_func']['data_size']
     batch_size = config['GA']['fit_func']['batch_size']
     iter_limit = config['GA']['fit_func']['iter_limit']
